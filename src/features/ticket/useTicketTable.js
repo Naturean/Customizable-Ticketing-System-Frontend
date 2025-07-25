@@ -6,6 +6,7 @@ import { storeToRefs } from "pinia";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
+import { getIssue } from "@/services/apiIssue.js";
 
 const stateColorMap = {
   wait: "bg-neutral-300",
@@ -35,14 +36,12 @@ export function useTicketTable() {
     let response = null;
     if (route.name === "ticket-my") {
       const ticketSubmitted = localStorage.getItem("ticket-submitted");
-      response = await fetch(`${BASE_API_URL}/issue/?id=${ticketSubmitted}`);
+      response = await getIssue({ id: ticketSubmitted });
     } else if (route.name === "ticket-todo") {
       if (accountInfo && accountInfo.value.staffRole === "admin") {
-        response = await fetch(`${BASE_API_URL}/issue`);
+        response = await getIssue();
       } else if (accountInfo && accountInfo.value.staffRole === "staff") {
-        response = await fetch(
-          `${BASE_API_URL}/issue/?staffId=${accountInfo.value.staffId}`
-        );
+        response = await getIssue({ staffId: accountInfo.value.id });
       } else {
         // unauthenticated user
         router.push({ name: "root" });
@@ -53,6 +52,7 @@ export function useTicketTable() {
     const result = await response.json();
 
     if (!response.ok || result.status !== "success") {
+      isLoading.value = false;
       return;
     }
 
@@ -71,9 +71,11 @@ export function useTicketTable() {
         imageUrls: JSON.parse(ticket.image),
         stateColor: stateColorMap[ticket.state],
         state: stateMap[ticket.state],
+        reply: ticket.reply ? ticket.reply : "无",
         fixedDate: ticket.fixedDate
           ? convertIsoStringToDateTime(ticket.fixedDate)
           : "无",
+        staffId: ticket.staffId,
         staffName: ticket.staffId
           ? staffInfoMap[ticket.staffId] || "未知"
           : "无",

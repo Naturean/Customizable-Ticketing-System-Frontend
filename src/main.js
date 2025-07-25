@@ -13,6 +13,12 @@ app.use(createPinia());
 app.use(router);
 
 const authStore = useAuthStore();
-authStore.initializeFromStorage();
 
-app.mount("#app");
+(async () => {
+  try {
+    await authStore.initializeFromStorage();
+    app.mount("#app");
+  } catch (error) {
+    console.error("Initailization Error:", error);
+  }
+})();

@@ -1,12 +1,10 @@
-import { BASE_API_URL } from "./constUtil.js";
+import { getStaff } from "@/services/apiStaff.js";
 
 export async function fetchStaffInfoBatch(staffIds) {
   if (!staffIds.length) return {};
 
   try {
-    const response = await fetch(
-      `${BASE_API_URL}/staff?id=[${staffIds.join(",")}]`
-    );
+    const response = await getStaff(`[${staffIds.join(",")}]`);
     const result = await response.json();
 
     if (!response.ok || result.status !== "success") {

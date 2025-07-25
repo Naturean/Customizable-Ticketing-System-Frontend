@@ -28,6 +28,9 @@
         ></span>
       </div>
 
+      <label class="label">回复</label>
+      <div class="my-2 whitespace-pre-line">{{ ticket.reply }}</div>
+
       <label class="label whitespace-pre-line">处理时间</label>
       <div class="my-2">{{ ticket.fixedDate }}</div>
 
@@ -59,10 +62,15 @@
       class="mt-2 bg-base-200 border-base-300 rounded-box border p-4"
       v-if="
         (accountInfo?.staffRole === 'admin' && ticket.state === '待处理') ||
-        (accountInfo?.staffRole === 'staff' && ticket.state === '处理中')
+        (accountInfo?.staffRole === 'staff' &&
+          ticket.state === '处理中' &&
+          accountInfo?.id === ticket.staffId)
       "
     >
-      <label class="label">员工号</label>
+      <!-- Admin -->
+      <label class="label" v-if="accountInfo?.staffRole === 'admin'"
+        >员工号</label
+      >
       <input
         type="number"
         class="input w-full my-4"
@@ -70,23 +78,39 @@
         min="1"
         required
         v-model="staffId"
+        v-if="accountInfo?.staffRole === 'admin'"
       />
-      <button class="btn btn-neutral w-full" @click="onAssign">
+      <!-- Staff -->
+      <label class="label" v-if="accountInfo?.staffRole === 'staff'"
+        >回复</label
+      >
+      <textarea
+        class="textarea resize-none w-full min-h-40 lg:min-h-50 my-4"
+        placeholder="填写工单回复"
+        title="填写工单回复"
+        v-model="reply"
+        required
+        v-if="accountInfo?.staffRole === 'staff'"
+      ></textarea>
+      <!-- Submit Button -->
+      <button class="btn btn-neutral w-full" @click="onButtonClick">
         {{ buttonTextMap[accountInfo.staffRole] }}
       </button>
     </div>
 
-    <dialog id="assignmodal" class="modal">
+    <dialog id="error-modal" class="modal">
       <div class="modal-box">
-        <h3 class="text-lg font-bold">
-          {{ assignSuccess ? "分配成功" : "分配失败" }}
-        </h3>
+        <h3 class="text-lg font-bold">错误</h3>
         <p class="py-4">
-          {{ assignSuccess ? "点击外部区域关闭对话框" : "请检查员工号并重试" }}
+          {{
+            accountInfo?.staffRole === "admin"
+              ? errorMessageAdmin
+              : errorMessageStaff
+          }}
         </p>
       </div>
       <form method="dialog" class="modal-backdrop">
-        <button @click="refresh">关闭</button>
+        <button>关闭</button>
       </form>
     </dialog>
   </main>
@@ -102,20 +126,33 @@ const buttonTextMap = {
   staff: "完成工单",
 };
 
+function openDialog() {
+  const errorModal = document.getElementById("error-modal");
+  errorModal.showModal();
+}
+
 const { ticket, isLoading } = useTicketDetail();
-const { staffId, assignSuccess, onAssign } = useTicketAssign();
+const { staffId, errorMessageAdmin, onAssign } = useTicketAssign({
+  openDialog,
+});
+const { reply, errorMessageStaff, onComplete } = useTicketComplete({
+  openDialog,
+});
+
+function onButtonClick() {
+  if (accountInfo.value?.staffRole === "admin") {
+    onAssign();
+  } else {
+    onComplete();
+  }
+}
 
 import { useAuthStore } from "@/stores/auth.js";
 import { storeToRefs } from "pinia";
+import { useTicketComplete } from "./useTicketComplete.js";
 
 const authStore = useAuthStore();
 const { accountInfo } = storeToRefs(authStore);
-
-const refresh = () => {
-  if (assignSuccess.value) {
-    location.reload();
-  }
-};
 </script>
 
 <style scoped></style>

@@ -1,6 +1,6 @@
 <template>
   <Loading class="mt-6" v-if="isLoading" />
-  <div class="bg-neutral-100 rounded-2xl h-auto w-auto my-2 p-4" v-else>
+  <div class="bg-base-200 rounded-2xl h-auto w-auto my-2 p-4" v-else>
     <div class="overflow-x-auto">
       <div class="text-center" v-if="tickets.length === 0">尚无工单数据</div>
       <table
@@ -21,7 +21,7 @@
         <tbody>
           <tr
             v-for="ticket in tickets"
-            class="hover:bg-neutral-200 transition-colors duration-200 cursor-pointer"
+            class="hover:bg-base-300 transition-colors duration-200 cursor-pointer"
             @click="goToDetail(ticket)"
           >
             <th>{{ ticket.id }}</th>

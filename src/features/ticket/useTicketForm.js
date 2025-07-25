@@ -1,3 +1,4 @@
+import { createIssue } from "@/services/apiIssue.js";
 import { BASE_API_URL } from "@/utils/constUtil.js";
 import { ref } from "vue";
 
@@ -66,10 +67,7 @@ export function useTicketForm() {
       );
     });
 
-    const response = await fetch(`${BASE_API_URL}/issue`, {
-      method: "POST",
-      body: formdata,
-    });
+    const response = await createIssue(formdata);
     const result = await response.json();
 
     currentStep.value = "complete";

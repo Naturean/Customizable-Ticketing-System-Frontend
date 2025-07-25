@@ -1,6 +1,6 @@
 <template>
   <Loading class="mt-6" v-if="isLoading" />
-  <div class="bg-neutral-100 rounded-2xl h-auto w-auto my-2 p-4" v-else>
+  <div class="bg-base-200 rounded-2xl h-auto w-auto my-2 p-4" v-else>
     <div class="overflow-x-auto">
       <div class="text-center" v-if="accounts.length === 0">尚无员工数据</div>
       <table
@@ -18,7 +18,7 @@
         <tbody>
           <tr
             v-for="account in accounts"
-            class="hover:bg-neutral-200 transition-colors duration-200"
+            class="hover:bg-base-300 transition-colors duration-200"
           >
             <th>{{ account.id }}</th>
             <td>{{ account.staffName }}</td>

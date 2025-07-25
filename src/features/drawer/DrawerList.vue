@@ -14,10 +14,13 @@
         </RouterLink>
       </li>
     </template>
+    <li class="flex-1 opacity-0"></li>
+    <li class="lg:hidden"><ToggleTheme /></li>
   </ul>
 </template>
 
 <script setup>
+import ToggleTheme from "../theme/ToggleTheme.vue";
 import { useDrawerList } from "./useDrawerList.js";
 
 const { menuItems } = useDrawerList();

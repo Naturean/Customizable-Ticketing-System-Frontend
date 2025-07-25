@@ -41,7 +41,6 @@
 </template>
 
 <script setup>
-import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth.js";
 
@@ -50,13 +49,11 @@ const password = ref("");
 const isLoggingIn = ref(false);
 
 const authStore = useAuthStore();
-const router = useRouter();
 
 async function onLogin() {
   isLoggingIn.value = true;
   try {
     await authStore.login(accountName.value, password.value);
-    router.push({ name: "root" });
   } finally {
     isLoggingIn.value = false;
   }

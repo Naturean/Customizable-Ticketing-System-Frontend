@@ -1,3 +1,5 @@
+import { useAuthStore } from "@/stores/auth.js";
+import { storeToRefs } from "pinia";
 import { createRouter, createWebHistory } from "vue-router";
 
 const router = createRouter({
@@ -27,6 +29,7 @@ const router = createRouter({
             {
               path: "todo",
               name: "ticket-todo",
+              meta: { requiresAuth: true },
               component: () => import("@/views/TicketTodoView.vue"),
             },
             {
@@ -49,7 +52,7 @@ const router = createRouter({
             {
               path: "management",
               name: "account-management",
-              meta: { requiresAdmin: true },
+              meta: { requiresAuth: true, requiresAdmin: true },
               component: () => import("@/views/AccountManagementView.vue"),
             },
           ],
@@ -67,6 +70,11 @@ const router = createRouter({
           ],
         },
         {
+          path: "403",
+          name: "forbidden",
+          component: () => import("@/views/ForbiddenView.vue"),
+        },
+        {
           path: ":pathMatch(.*)*",
           name: "not-found",
           component: () => import("@/views/NotFoundView.vue"),
@@ -76,16 +84,16 @@ const router = createRouter({
   ],
 });
 
-// router.beforeEach((to) => {
-//   const authStore = useAuthStore();
-//   if (to.meta.requiresAuth && !authStore.isLoggedIn) {
-//     return { name: "login" };
-//   }
-//   console.log("req", to);
-//   console.log("adm", authStore.isAdmin);
-//   if (to.meta?.requiresAdmin && !authStore.isAdmin) {
-//     return { name: "not-found" };
-//   }
-// });
+router.beforeEach((to) => {
+  const authStore = useAuthStore();
+  const { isLoggedIn, isAdmin } = storeToRefs(authStore);
+  if (to.meta.requiresAuth && !isLoggedIn.value) {
+    return { name: "account-personal" };
+  }
+  if (to.meta.requiresAdmin && !isAdmin.value) {
+    return { name: "forbidden" };
+  }
+  return true;
+});
 
 export default router;

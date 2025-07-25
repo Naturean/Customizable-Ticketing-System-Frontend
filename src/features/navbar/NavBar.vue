@@ -8,6 +8,7 @@
       >
         <MenuIcon />
       </label>
+      <ToggleTheme class="hidden lg:inline-grid" />
     </div>
     <div class="navbar-center">
       <RouterLink :to="{ name: 'ticket-submit' }" class="btn btn-ghost text-lg"
@@ -22,8 +23,9 @@
 
 <script setup>
 import { RouterLink } from "vue-router";
-import Avatar from "../avatar/Avatar.vue";
+import Avatar from "../user/Avatar.vue";
 import MenuIcon from "@/icons/MenuIcon.vue";
+import ToggleTheme from "../theme/ToggleTheme.vue";
 </script>
 
 <style scoped></style>

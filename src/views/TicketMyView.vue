@@ -1,6 +1,6 @@
 <template>
   <main class="p-4">
-    <div class="bg-neutral-100 rounded-2xl h-30 w-auto my-2"></div>
+    <div class="bg-base-200 rounded-2xl h-30 w-auto my-2"></div>
     <TicketTable />
   </main>
 </template>

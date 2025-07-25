@@ -4,31 +4,37 @@ import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 
-export function useTicketAssign({ openDialog }) {
-  const staffId = ref(null);
-  const errorMessageAdmin = ref("");
+export function useTicketComplete({ openDialog }) {
+  const reply = ref(null);
+  const errorMessageStaff = ref("");
 
   const authStore = useAuthStore();
   const { accountInfo } = storeToRefs(authStore);
-  const adminId = accountInfo.value?.id;
+  const staffId = accountInfo.value?.id;
 
   const route = useRoute();
   const ticketId = route.params.id;
 
-  async function onAssign() {
-    if (!ticketId || !staffId || !adminId) {
+  async function onComplete() {
+    if (!ticketId || !staffId) {
+      return;
+    }
+
+    if (!reply.value || reply.value === "") {
+      errorMessageStaff.value = "请填写工单回复！";
+      openDialog();
       return;
     }
 
     const response = await updateIssue({
       id: ticketId,
-      staffId: staffId.value,
-      adminId: adminId,
+      staffId: staffId,
+      reply: reply.value,
     });
     const result = await response.json();
 
     if (!response.ok || result.status !== "success") {
-      errorMessageAdmin.value = "分配失败，请重新尝试！";
+      errorMessageStaff.value = "完成失败，请重新尝试！";
       openDialog();
       return;
     }
@@ -36,5 +42,5 @@ export function useTicketAssign({ openDialog }) {
     location.reload();
   }
 
-  return { staffId, errorMessageAdmin, onAssign };
+  return { reply, errorMessageStaff, onComplete };
 }

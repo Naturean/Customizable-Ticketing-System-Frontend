@@ -1,4 +1,4 @@
-import { BASE_API_URL } from "@/utils/constUtil.js";
+import { getStaff } from "@/services/apiStaff.js";
 import { ref, onMounted } from "vue";
 
 const staffRoleMap = {
@@ -13,7 +13,7 @@ export function useAccountTable() {
   onMounted(async () => {
     isLoading.value = true;
 
-    const response = await fetch(`${BASE_API_URL}/staff`);
+    const response = await getStaff();
     const result = await response.json();
 
     if (!response.ok || result.status !== "success") {
