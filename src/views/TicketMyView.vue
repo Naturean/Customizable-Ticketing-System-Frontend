@@ -1,11 +1,12 @@
 <template>
   <main class="p-4">
-    <div class="bg-base-200 rounded-2xl h-30 w-auto my-2"></div>
+    <TicketSearchBar />
     <TicketTable />
   </main>
 </template>
 
 <script setup>
+import TicketSearchBar from "@/features/ticket/TicketSearchBar.vue";
 import TicketTable from "@/features/ticket/TicketTable.vue";
 </script>
 

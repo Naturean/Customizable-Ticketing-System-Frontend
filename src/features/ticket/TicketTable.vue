@@ -4,7 +4,7 @@
     <div class="overflow-x-auto">
       <div class="text-center" v-if="tickets.length === 0">尚无工单数据</div>
       <table
-        class="table table-xs sm:table-sm lg:table-md w-full md:table-fixed"
+        class="table table-sm lg:table-md w-full md:table-fixed"
         v-if="tickets.length > 0"
       >
         <thead>

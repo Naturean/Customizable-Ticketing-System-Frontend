@@ -4,7 +4,7 @@
     <div class="overflow-x-auto">
       <div class="text-center" v-if="accounts.length === 0">尚无员工数据</div>
       <table
-        class="table table-xs sm:table-sm lg:table-md w-full md:table-fixed"
+        class="table table-sm lg:table-md w-full md:table-fixed"
         v-if="accounts.length > 0"
       >
         <thead>

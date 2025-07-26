@@ -4,8 +4,9 @@
   </Drawer>
 
   <main v-else>
-    <nav class="navbar bg-base-100 shadow-sm fixed top-0 z-1 grid grid-cols-3">
-      <div class="col-1"></div>
+    <nav
+      class="navbar bg-base-100 shadow-sm fixed top-0 z-1 grid grid-cols-[50px_1fr_50px]"
+    >
       <div class="text-center font-bold col-2">
         <RouterLink
           :to="{ name: 'ticket-submit' }"

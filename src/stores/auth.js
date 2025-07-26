@@ -38,8 +38,8 @@ export const useAuthStore = defineStore("auth", () => {
         JSON.parse(saved);
       accountInfo.value = savedAccount;
       isLoggedIn.value = savedLogin;
+      await checkUpdateWithServer();
     }
-    await checkUpdateWithServer();
   }
 
   function saveToStorage(password) {

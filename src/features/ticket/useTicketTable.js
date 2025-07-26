@@ -1,12 +1,12 @@
 import { convertIsoStringToDateTime } from "@/utils/dateUtil.js";
 import { fetchStaffInfoBatch } from "@/utils/staffUtil.js";
-import { BASE_API_URL } from "@/utils/constUtil.js";
 import { useAuthStore } from "@/stores/auth.js";
 import { storeToRefs } from "pinia";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { getIssue } from "@/services/apiIssue.js";
+import { useTicketsStore } from "@/stores/tickets.js";
 
 const stateColorMap = {
   wait: "bg-neutral-300",
@@ -21,7 +21,7 @@ const stateMap = {
 };
 
 export function useTicketTable() {
-  const tickets = ref([]);
+  const { tickets, finalTickets } = storeToRefs(useTicketsStore());
   const isLoading = ref(true);
 
   const route = useRoute();
@@ -85,5 +85,5 @@ export function useTicketTable() {
     isLoading.value = false;
   });
 
-  return { tickets, isLoading };
+  return { tickets: finalTickets, isLoading };
 }
