@@ -22,7 +22,7 @@ const { accountInfo } = storeToRefs(authStore);
 const avatarUrl = computed(() =>
   accountInfo.value
     ? accountInfo.value.avatarUrl
-    : "http://127.0.0.1:3000/imgs/default_avatar.png"
+    : "http://127.0.0.1:3000/avatar/default_avatar.png"
 );
 const avatarTip = computed(() =>
   accountInfo.value ? accountInfo?.value.accountName : "未登录"

@@ -28,6 +28,8 @@ export function useTicketTable() {
   const router = useRouter();
 
   onMounted(async () => {
+    tickets.value = [];
+
     isLoading.value = true;
 
     const authStore = useAuthStore();

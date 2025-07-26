@@ -29,6 +29,9 @@ export function useTicketAssign({ openDialog }) {
 
     if (!response.ok || result.status !== "success") {
       errorMessageAdmin.value = "分配失败，请重新尝试！";
+      if (result.message === `Staff ${staffId.value} is not existed!`) {
+        errorMessageAdmin.value = "此员工不存在，请检查并重试！";
+      }
       openDialog();
       return;
     }

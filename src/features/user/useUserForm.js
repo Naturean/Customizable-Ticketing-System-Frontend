@@ -49,6 +49,9 @@ export function useUserForm() {
     isSaving.value = false;
 
     if (!response.ok || result.status !== "success") {
+      if (result.message === "Account name has been occupied") {
+        alert("用户名已被占用！");
+      }
       return;
     }
 
