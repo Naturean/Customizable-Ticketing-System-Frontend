@@ -31,15 +31,19 @@ export const useAuthStore = defineStore("auth", () => {
     sessionStorage.removeItem("auth");
   }
 
-  async function initializeFromStorage() {
+  function initializeFromStorage() {
     const saved = sessionStorage.getItem("auth");
     if (saved) {
       const { accountInfo: savedAccount, isLoggedIn: savedLogin } =
         JSON.parse(saved);
       accountInfo.value = savedAccount;
       isLoggedIn.value = savedLogin;
-      await checkUpdateWithServer();
+      checkUpdateWithServer().catch((error) =>
+        console.error("后台更新用户信息失败：", error)
+      );
     }
+
+    return Promise.resolve();
   }
 
   function saveToStorage(password) {

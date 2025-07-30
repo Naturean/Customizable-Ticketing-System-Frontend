@@ -18,17 +18,11 @@
       <label class="label">密码</label>
       <input
         type="password"
-        class="input validator"
+        class="input"
         placeholder="密码"
-        minlength="8"
-        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-        title="密码须至少有8个及以上的字符，包含数字、大小写字母"
         required
         v-model.lazy.trim="password"
       />
-      <p class="validator-hint hidden">
-        密码须至少有8个及以上的字符，包含数字、大小写字母
-      </p>
 
       <div class="flex justify-center">
         <button class="btn btn-neutral mt-4 w-1/2" :disabled="isLoggingIn">
